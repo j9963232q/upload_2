@@ -18,7 +18,7 @@ $(function () {
     $('#fileupload').fileupload({
         // Uncomment the following to send cross-domain cookies:
         //xhrFields: {withCredentials: true},
-        url: 'server/'
+        url: 'https://github.com/j9963232q/upload_2/server/'
     });
 
     // Enable iframe cross-domain access via redirect option:
@@ -34,7 +34,7 @@ $(function () {
     if (window.location.hostname) {
         // Demo settings:
         $('#fileupload').fileupload('option', {
-            url: 'server/',
+            url: 'https://github.com/j9963232q/upload_2/server/',
             // Enable image resizing, except for Android and Opera,
             // which actually support image resizing, but fail to
             // send Blob objects via XHR requests:
