@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>jQuery File Upload Example</title>
+<style type="text/css">
+	.bar {
+    height: 18px;
+    background: green;
+}
+</style>
+</head>
+<body>
+<input id="fileupload" type="file" name="files[]" data-url="server/php/" multiple>
+<div id="progress">
+    <div class="bar" style="width: 0%;"></div>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="js/vendor/jquery.ui.widget.js"></script>
+<script src="js/jquery.iframe-transport.js"></script>
+<script src="js/jquery.fileupload.js"></script>
+<script>
+$(document).ready(function () {
+    'use strict';
+
+    $('#fileupload').fileupload({
+        add: function(e, data) {
+                var uploadErrors = [];
+                var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+                if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+                    uploadErrors.push('Not an accepted file type');
+                }
+                if(data.originalFiles[0]['size'].length && data.originalFiles[0]['size'] > 5000000) {
+                    uploadErrors.push('Filesize is too big');
+                }
+                if(uploadErrors.length > 0) {
+                    alert(uploadErrors.join("\n"));
+                } else {
+                    data.submit();
+                }
+        },
+        dataType: 'json',
+        autoUpload: false,
+        // acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+        // maxFileSize: 5000000,
+        done: function (e, data) {
+            $.each(data.result.files, function (index, file) {
+                $('<p style="color: green;">' + file.name + '<i class="elusive-ok" style="padding-left:10px;"/> - Type: ' + file.type + ' - Size: ' + file.size + ' byte</p>')
+                .appendTo('#div_files');
+            });
+        },
+        fail: function (e, data) {
+            $.each(data.messages, function (index, error) {
+                $('<p style="color: red;">Upload file error: ' + error + '<i class="elusive-remove" style="padding-left:10px;"/></p>')
+                .appendTo('#div_files');
+            });
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+
+            $('#progress .bar').css('width', progress + '%');
+        }
+    });
+});
+</script>
+</body> 
+</html>
